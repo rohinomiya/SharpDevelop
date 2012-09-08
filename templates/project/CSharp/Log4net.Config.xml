@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<log4net>
+		
+		<!-- 通常ログ：単一ファイル出力 -->
+		<appender name="InfoLogDailyAppender" type="log4net.Appender.FileAppender">
+			<File value="${APPDATA}\\Rohinomiya\\SampleLog4Net\\Logs\\Info.log" />
+	
+			<AppendToFile value="true" />
+
+			<filter type="log4net.Filter.LevelRangeFilter">
+				<param name="LevelMax" value="WARN" />
+				<param name="LevelMin" value="INFO" />
+			</filter>
+
+			<layout type="log4net.Layout.PatternLayout">
+				<ConversionPattern value="%date [%thread] [%-5level] %logger - %message%n" />
+			</layout>
+		</appender>
+		
+		<!-- エラーログ：分割ファイル出力 -->
+		<appender name="ErrorLogDailyAppender" type="log4net.Appender.RollingFileAppender">
+			<!-- ファイル名は日付ごと -->
+			<param name="File" value="${APPDATA}\\Rohinomiya\\SampleLog4Net\\Logs\\Error_" />
+			<param name="DatePattern" value='yyyyMMdd".log"' />
+			<param name="RollingStyle" value="date" />
+			<param name="StaticLogFileName" value="false" />
+
+			<param name="AppendToFile" value="true" />
+
+			<filter type="log4net.Filter.LevelRangeFilter">
+				<param name="LevelMax" value="FATAL" />
+				<param name="LevelMin" value="ERROR" />
+			</filter>
+
+			<param name="MaximumFileSize" value="10MB" />
+			<param name="MaxSizeRollBackups" value="10" />
+			
+			<layout type="log4net.Layout.PatternLayout">
+				<ConversionPattern value="%date [%thread] [%-5level] %logger %file(%line) %class %method - %message%n" />
+			</layout>
+		</appender>
+		
+		<!-- デバッグ用：分割ファイル出力 -->
+		<appender name="DebugLogDailyAppender" type="log4net.Appender.RollingFileAppender">
+
+			<!-- ファイル名は日付ごと -->
+			<param name="File" value="${APPDATA}\\Rohinomiya\\SampleLog4Net\\Logs\\Trace_" />
+			<param name="DatePattern" value='yyyyMMdd".log"' />
+			<param name="RollingStyle" value="date" />
+			<param name="StaticLogFileName" value="false" />
+
+			<param name="AppendToFile" value="true" />
+
+			<filter type="log4net.Filter.LevelRangeFilter">
+				<!-- <param name="LevelMax" value="FATAL" /> -->
+				<param name="LevelMin" value="TRACE" />
+			</filter>
+
+			<param name="MaximumFileSize" value="10MB" />
+			<param name="MaxSizeRollBackups" value="10" />
+
+			<layout type="log4net.Layout.PatternLayout">
+				<ConversionPattern value="%date [%thread] [%-5level] %logger %file(%line) %class %method - %message%n" />
+			</layout>
+		</appender>
+				
+		<root>
+			<!-- TRACE以上のログを記録 -->
+			<level value="TRACE" />
+			<!-- 使用する Appender -->
+			<appender-ref ref="InfoLogDailyAppender" />
+			<appender-ref ref="ErrorLogDailyAppender" />
+			<appender-ref ref="DebugLogDailyAppender" />
+		</root>
+	
+	</log4net>
+</configuration>
+
+<!--
+PatternLayoutで指定できるパターン
+パターン	内容
+%literal	リテラルを表示（「%」を出力する場合など）
+%newline	改行
+%n
+%c	ロガー名
+%logger
+%C	実行中のクラス名
+%class
+%type
+%d	現在の日付（$d{yyyy年MM月dd日})
+%date
+%exception	例外情報
+%F	ファイルのパス
+%file
+%l	メソッド名とファイル名および行番号
+%location
+%L	行番号
+%line
+%m	メッセージ
+%message
+%M	メソッド名
+%method
+%p	ログのレベル
+%level
+%r	アプリケーションの経過時間
+%timestamp
+%t	スレッドID
+%thread
+%a	実行ファイル名
+%appdomain
+%u	現在のコンテキストのユーザー名
+（System.Threading.Thread.CurrentPrincipal.Identity.Nameの値がセットされる）
+%identity
+%utcdate	UTC日付
+%utcDate
+%UtcDate
+%w	ユーザー名
+-->
